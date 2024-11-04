@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/anuragrao04/pesuio-final-project/auth"
-	"github.com/anuragrao04/pesuio-final-project/compiler"
-	"github.com/anuragrao04/pesuio-final-project/questions"
+	"github.com/7Chethan007/PESU-IO_GoLang_Final_Project/auth"
+	"github.com/7Chethan007/PESU-IO_GoLang_Final_Project/compiler"
+	"github.com/7Chethan007/PESU-IO_GoLang_Final_Project/questions"
 	"github.com/gin-gonic/gin"
 )
 
