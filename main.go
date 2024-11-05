@@ -15,14 +15,20 @@ func main() {
 
 	// Initialize database
 	database.InitDB()
-
-	// Routes
 	sqlDB, err := database.DB.DB()
 	if err != nil {
 		log.Fatalf("Failed to get sql.DB from gorm.DB: %v", err)
 	}
+
+	// Authentication routes
 	router.POST("/auth/signin", auth.SigninHandle(database.DB))
 	router.POST("/auth/signup", auth.SignupHandle(database.DB))
+
+	// Add new routes for profile and viewing all users
+	router.GET("/auth/profile", auth.ProfileHandle(database.DB)) // For getting user profile
+	router.GET("/auth/users", auth.UsersHandle(database.DB))     // For getting all users
+
+	// Compiler and questions routes
 	router.POST("/run", compiler.Run)
 	router.POST("/question/create", questions.CreateQuestionHandle(sqlDB))
 	router.GET("/questions", questions.FetchQuestionsHandle(sqlDB))
