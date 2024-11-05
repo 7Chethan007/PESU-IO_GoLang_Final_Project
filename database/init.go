@@ -10,20 +10,18 @@ import (
 
 var DB *gorm.DB
 
-func Init(databaseFileName string) {
-	// implement
-	// populate DB variable
+func InitDB() {
 	var err error
-	DB, err = gorm.Open(sqlite.Open(databaseFileName), &gorm.Config{})
+	DB, err = gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("failed to connect to database: %v", err)
 	}
 
-	// Migrate the schema for User, Question, and TestCase
+	// Auto-migrate the models
 	err = DB.AutoMigrate(&models.User{}, &models.Question{}, &models.TestCase{})
 	if err != nil {
 		log.Fatalf("failed to migrate database models: %v", err)
 	}
 
-	log.Println("Database connection initialized and models migrated successfully")
+	log.Println("Database initialized and models migrated successfully")
 }
