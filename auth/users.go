@@ -7,6 +7,13 @@ import (
 	"gorm.io/gorm"
 )
 
+// User represents a user in the system
+type User struct {
+	ID       uint   `json:"id"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+}
+
 // ProfileHandle retrieves the profile of the currently authenticated user
 func ProfileHandle(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -25,4 +32,26 @@ func ProfileHandle(db *gorm.DB) gin.HandlerFunc {
 			"email":    user.Email,
 		})
 	}
+}
+
+// UsersHandle handles the request to get all users
+
+func UsersHandle(db *gorm.DB) gin.HandlerFunc {
+
+	return func(c *gin.Context) {
+
+		var users []User
+
+		if err := db.Find(&users).Error; err != nil {
+
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+
+			return
+
+		}
+
+		c.JSON(http.StatusOK, users)
+
+	}
+
 }
