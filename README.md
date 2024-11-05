@@ -76,4 +76,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 For any inquiries or feedback, please contact:
 
 **Chethan**
-- Email: [chethan@example.com](mailto:mnchethan0+golangproject@gmail.com)
+- Email: [mnchethan0+golangproject@gmail.com](mailto:mnchethan0+golangproject@gmail.com)
