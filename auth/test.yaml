@@ -30,3 +30,10 @@ jobs:
 
             - name: Run tests
                 run: npm test
+
+
+                - name: Run Signin Tests
+                  run: go test ./auth/signin_test.go
+
+                - name: Run Signup Tests
+                  run: go test ./auth/signup_test.go
