@@ -3,6 +3,7 @@ package auth
 import (
 	"net/http"
 
+	"github.com/7Chethan007/PESU-IO_GoLang_Final_Project/auth/middleware"
 	"github.com/7Chethan007/PESU-IO_GoLang_Final_Project/models"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -28,10 +29,16 @@ func SigninHandle(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		if err := bcrypt.CompareHashAndPassword([]byte(storedUser.Password), []byte(user.Password)); err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Incorrect password"})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{"message": "Signin successful"})
+		token, err := middleware.GenerateJWT(storedUser.Username)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"token": token})
 	}
 }

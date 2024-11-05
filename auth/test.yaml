@@ -18,22 +18,32 @@ jobs:
 
         steps:
             - name: Checkout repository
-                uses: actions/checkout@v2
+              uses: actions/checkout@v2
 
             - name: Set up Node.js ${{ matrix.node-version }}
-                uses: actions/setup-node@v2
-                with:
-                    node-version: ${{ matrix.node-version }}
+              uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ matrix.node-version }}
 
             - name: Install dependencies
-                run: npm install
+              run: npm install
 
-            - name: Run tests
-                run: npm test
+            - name: Run Node.js tests
+              run: npm test
 
+            - name: Set up Go
+              uses: actions/setup-go@v2
+              with:
+                  go-version: 1.16
 
-                - name: Run Signin Tests
-                  run: go test ./auth/signin_test.go
+            - name: Run Go tests
+              run: go test ./...
 
-                - name: Run Signup Tests
-                  run: go test ./auth/signup_test.go
+            - name: Lint Go code
+              run: golangci-lint run
+
+            - name: Run Signin Tests
+              run: go test ./auth/signin_test.go
+
+            - name: Run Signup Tests
+              run: go test ./auth/signup_test.go
