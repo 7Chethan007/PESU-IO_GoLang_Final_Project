@@ -54,6 +54,22 @@ To run tests for the project, use the following command:
 go test ./...
 ```
 
+
+## Middleware and JWT Authentication
+This project uses middleware for logging and JWT (JSON Web Token) for authentication. The middleware ensures that all requests are logged, and JWT is used to secure endpoints by verifying tokens.
+
+## Testing
+To run tests for the project, use the following command:
+
+```sh
+go test ./...
+```
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add some feature'`).
+5. Push to the branch (`git push origin feature-branch`).
+6. Open a pull request.
+
 ## Contributing
 Contributions are welcome! Please follow these steps to contribute:
 
@@ -63,6 +79,7 @@ Contributions are welcome! Please follow these steps to contribute:
 4. Commit your changes (`git commit -m 'Add some feature'`).
 5. Push to the branch (`git push origin feature-branch`).
 6. Open a pull request.
+
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
