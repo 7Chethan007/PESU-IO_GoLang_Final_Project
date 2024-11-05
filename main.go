@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/7Chethan007/PESU-IO_GoLang_Final_Project/auth"
+	"github.com/7Chethan007/PESU-IO_GoLang_Final_Project/auth/middleware"
 	"github.com/7Chethan007/PESU-IO_GoLang_Final_Project/compiler"
 	"github.com/7Chethan007/PESU-IO_GoLang_Final_Project/database"
 	"github.com/7Chethan007/PESU-IO_GoLang_Final_Project/questions"
@@ -20,13 +21,16 @@ func main() {
 		log.Fatalf("Failed to get sql.DB from gorm.DB: %v", err)
 	}
 
-	// Authentication routes
+	// Public routes
 	router.POST("/auth/signin", auth.SigninHandle(database.DB))
 	router.POST("/auth/signup", auth.SignupHandle(database.DB))
 
-	// Add new routes for profile and viewing all users
-	router.GET("/auth/profile", auth.ProfileHandle(database.DB)) // For getting user profile
-	router.GET("/auth/users", auth.UsersHandle(database.DB))     // For getting all users
+	// Protected routes
+	protected := router.Group("/auth")
+	protected.Use(middleware.AuthMiddleware()) // Apply JWT middleware
+
+	protected.GET("/profile", auth.ProfileHandle(database.DB)) // Profile route
+	protected.GET("/users", auth.UsersHandle(database.DB))     // View all users route
 
 	// Compiler and questions routes
 	router.POST("/run", compiler.Run)

@@ -1,45 +1,40 @@
 package middleware
 
 import (
-	"net/http"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
 )
 
-var jwtKey = []byte("your_secret_key")
+var jwtSecret = []byte("your_secret_key_here") // Replace this with a secure secret
 
-type Claims struct {
-	Username string `json:"username"`
-	jwt.StandardClaims
+// GenerateJWT generates a JWT token for a given user ID
+func GenerateJWT(userID string) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"userID": userID,
+		"exp":    time.Now().Add(time.Hour * 72).Unix(), // Token expiration, e.g., 72 hours
+	})
+
+	return token.SignedString(jwtSecret)
 }
 
-func GenerateJWT(username string) (string, error) {
-	expirationTime := time.Now().Add(24 * time.Hour)
-	claims := &Claims{
-		Username: username,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
-		},
-	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(jwtKey)
-}
-
-func JWTMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		tokenString := c.GetHeader("Authorization")
-		claims := &Claims{}
-		token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-			return jwtKey, nil
-		})
-		if err != nil || !token.Valid {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-			c.Abort()
-			return
+// ParseJWT parses and validates a JWT token
+func ParseJWT(tokenString string) (string, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, jwt.ErrSignatureInvalid
 		}
-		c.Set("username", claims.Username)
-		c.Next()
+		return jwtSecret, nil
+	})
+
+	if err != nil {
+		return "", err
 	}
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		userID := claims["userID"].(string)
+		return userID, nil
+	}
+
+	return "", jwt.ErrSignatureInvalid
 }
