@@ -1,7 +1,7 @@
 # PESU-IO GoLang Final Project
 
 ## Overview
-This repository contains the final project for the PESU-IO course. The project is developed using GoLang and demonstrates various concepts and techniques learned throughout the course.
+This repository contains the final project for the PESU-IO course. The project is developed using GoLang and demonstrates some of the concepts and techniques learned throughout the course.
 
 ## Table of Contents
 - [Overview](#overview)
