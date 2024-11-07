@@ -6,7 +6,6 @@ This repository contains the final project for the PESU-IO course. The project i
 ## Table of Contents
 - [Overview](#overview)
 - [Features](#features)
-- [Installation](#installation)
 - [Middleware and JWT Authentication](#middleware-and-jwt-authentication)
 - [Contributing](#contributing)
 - [License](#license)
@@ -19,23 +18,6 @@ This repository contains the final project for the PESU-IO course. The project i
 - JSON-based data handling
 - JWT Authentication for secure user sessions
 - Role-Based Access Control (RBAC) (Coming Soon)
-
-## Installation
-To get started with the project, follow these steps:
-
-1. **Clone the repository:**
-    ```sh
-    git clone https://github.com/7Chethan007/PESU-IO_GoLang_Final_Project.git
-    cd PESU-IO_GoLang_Final_Project
-    ```
-
-2. **Install dependencies:**
-    ```sh
-    go mod tidy
-    ```
-
-3. **Set up environment variables:**
-    Create a `.env` file in the root directory and add the necessary environment variables.
 
 
 
