@@ -29,8 +29,11 @@ func main() {
 	protected := router.Group("/auth")
 	protected.Use(middleware.AuthMiddleware()) // Apply JWT middleware
 
-	protected.GET("/profile", auth.ProfileHandle(database.DB)) // Profile route
-	protected.GET("/users", auth.UsersHandle(database.DB))     // View all users route
+	// Sub-Part-Of-Protected routes
+	// Fetches and returns the profile information of the authenicated user
+	protected.GET("/profile", auth.ProfileHandle(database.DB)) // Profile route	- passing DB connection in parameter
+	// Fetches and returns all the users in the system
+	protected.GET("/users", auth.UsersHandle(database.DB)) // View all users route - passing DB connection in parameter
 
 	// Compiler and questions routes
 	router.POST("/run", compiler.Run)

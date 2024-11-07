@@ -11,18 +11,18 @@ import (
 
 func SignupHandle(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var user models.SignUpRequest
+		var user models.SignUpRequest // Reads Parse JSON request
 		if err := c.ShouldBindJSON(&user); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 			return
 		}
-
+		// Hash Password in DB
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password"})
 			return
 		}
-
+		// Create User
 		newUser := models.User{Username: user.Username, Password: string(hashedPassword)}
 		if err := db.Create(&newUser).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})

@@ -17,15 +17,15 @@ type User struct {
 // ProfileHandle retrieves the profile of the currently authenticated user
 func ProfileHandle(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// Get user ID from the JWT or session (for now, let's assume we get it from query param or JWT middleware)
-		userID := c.GetString("userID") // This assumes a middleware sets userID in the context
+		// Get user ID from the JWT or session
+		userID := c.GetString("userID") // Retreving the userID from the request context in postman
 
-		var user User
+		var user User // Interates through the db with userID, if not found returns 404
 		if err := db.First(&user, "id = ?", userID).Error; err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 			return
 		}
-
+		// On successful iteration of db, returns details of user
 		c.JSON(http.StatusOK, gin.H{
 			"id":       user.ID,
 			"username": user.Username,
@@ -40,16 +40,14 @@ func UsersHandle(db *gorm.DB) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 
-		var users []User
+		var users []User // In user variable we are storing all the users in the array
 
 		if err := db.Find(&users).Error; err != nil {
-
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-
 			return
 
 		}
-
+		// if no error, returns all the users stored in the array users above
 		c.JSON(http.StatusOK, users)
 
 	}

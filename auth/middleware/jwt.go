@@ -6,7 +6,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-var jwtSecret = []byte("your_secret_key_here") // Replace this with a secure secret
+var jwtSecret = []byte("my_test_secret_key") // Replace this with a secure secret
 
 // GenerateJWT generates a JWT token for a given user ID
 func GenerateJWT(userID string) (string, error) {

@@ -12,13 +12,13 @@ import (
 
 func SigninHandle(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var user models.SignInRequest
+		var user models.SignInRequest //Parse Request
 		if err := c.ShouldBindJSON(&user); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 			return
 		}
 
-		var storedUser models.User
+		var storedUser models.User // Find User
 		if err := db.Where("username = ?", user.Username).First(&storedUser).Error; err != nil {
 			if err == gorm.ErrRecordNotFound {
 				c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
@@ -27,12 +27,12 @@ func SigninHandle(db *gorm.DB) gin.HandlerFunc {
 			}
 			return
 		}
-
+		// Compare Password
 		if err := bcrypt.CompareHashAndPassword([]byte(storedUser.Password), []byte(user.Password)); err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 			return
 		}
-
+		// Generate JWT
 		token, err := middleware.GenerateJWT(storedUser.Username)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
