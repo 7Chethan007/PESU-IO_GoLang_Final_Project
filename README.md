@@ -39,20 +39,6 @@ To get started with the project, follow these steps:
 3. **Set up environment variables:**
     Create a `.env` file in the root directory and add the necessary environment variables.
 
-## Usage
-To run the project locally, use the following command:
-
-```sh
-go run [main.go](http://_vscodecontentref_/0)
-## Middleware and JWT Authentication
-This project uses middleware for logging and JWT (JSON Web Token) for authentication. The middleware ensures that all requests are logged, and JWT is used to secure endpoints by verifying tokens.
-
-## Testing
-To run tests for the project, use the following command:
-
-```sh
-go test ./...
-```
 
 
 ## Middleware and JWT Authentication
